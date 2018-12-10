@@ -8,19 +8,27 @@ class Board extends Component {
         this.state = {
             board: Array(100).fill(null),
             id: 1,
-            mines: [0, 1, 2, 3, 4, 5, 6]
+            mines: [0, 1, 2, 10, 12, 20, 21, 22, 33, 44, 55, 66]
         }
     }
 
     playerTurn = (id) => {
       let { board, mines } = this.state
       let move = board
-      console.log(id);
+      console.log(board[id]);
         if (mines.includes(id)) {
-          console.log("mine");
-          move[id] = 1
+          console.log("gameover");
+          move[id] = "mine"
         } else if (board[id] == null) {
-          console.log("null");
+          let counter = 0
+            let sroundingSquares = [id-11, id-10, id-9, id-1, id+1, id+9, id+10, id+11]
+            for (let i = 0; i < sroundingSquares.length; i++) {
+              if (mines.includes(sroundingSquares[i])) {
+                counter ++
+              }
+            }
+          console.log(counter);
+          move[id] = counter
         }
         this.setState({
           board: move
