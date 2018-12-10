@@ -21,5 +21,13 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "main": "index.js",
+  "repository": "https://github.com/jscotty723/Minesweeper-React.git",
+  "author": "jscotty723 <julianne.peters@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.2.0",
+    "@babel/preset-env": "^7.2.0"
+  }
 }
