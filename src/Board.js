@@ -12,33 +12,49 @@ class Board extends Component {
         }
     }
 
+    rightClick = (id) => {
+      console.log("right click");
+    }
+
     playerTurn = (id) => {
       let { board, mines } = this.state
       let move = board
-      console.log(board[id]);
         if (mines.includes(id)) {
-          console.log("gameover");
-          move[id] = "mine"
+          move[id] = "X"
         } else if (board[id] == null) {
           let counter = 0
-            let sroundingSquares = [id-11, id-10, id-9, id-1, id+1, id+9, id+10, id+11]
-            for (let i = 0; i < sroundingSquares.length; i++) {
-              if (mines.includes(sroundingSquares[i])) {
-                counter ++
+          const num = id
+          let str = num.toString()
+          let lastDigit = str.charAt(str.length-1)
+          const surroundingSquaresIfNine = [id-11, id-10, id-1, id+9, id+10]
+          const surroundingSquares = [id-11, id-10, id-9, id-1, id+1, id+9, id+10, id+11]
+            if (lastDigit === "9") {
+              for (let i = 0; i < surroundingSquaresIfNine.length; i++) {
+                if (this.state.mines.includes(surroundingSquaresIfNine[i])) {
+                  counter ++
+                }
+              }
+            } else if (lastDigit !== "9") {
+              for (let i = 0; i < surroundingSquares.length; i++) {
+                if (this.state.mines.includes(surroundingSquares[i])) {
+                  counter ++
+                }
               }
             }
-          console.log(counter);
           move[id] = counter
         }
+        console.log(move);
         this.setState({
           board: move
         })
     }
+
+
   render() {
     return (
       <div id="board">
         {this.state.board.map((el, i) => {
-            return <Square playerTurn={this.playerTurn} id={i}/>
+            return <Square playerTurn={this.playerTurn} rightClick={this.rightClick} arrayVal={el} index={i}/>
         })
         }
       </div>
@@ -47,9 +63,3 @@ class Board extends Component {
 }
 
 export default Board;
-
-
-// <div className='board'>
-//     {this.state.gameBoard.map((el, i) => (
-//     <div onClick={() => this.playerClick(i)} style={{backgroundColor: this.displayColor(i)}} className='box i' id={i}>
-// </div>
