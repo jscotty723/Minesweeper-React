@@ -6,7 +6,7 @@ class Board extends Component {
     constructor(props){
         super(props)
         this.state = {
-            board: Array(100).fill(null),
+            board: Array(100).fill(-1),
             id: 1,
             mines: [0, 1, 2, 10, 12, 20, 21, 22, 33, 44, 55, 66]
         }
@@ -15,7 +15,7 @@ class Board extends Component {
     rightClick = (id) => {
         let { board } = this.state
         let move = board
-            if (board[id] === null) {
+            if (board[id] === -1) {
                 move[id] = "F"
             }
         console.log("right click");
@@ -30,7 +30,7 @@ class Board extends Component {
       let move = board
         if (mines.includes(id)) {
           move[id] = "M"
-        } else if (board[id] == null) {
+        } else if (board[id] == -1) {
           let counter = 0
           const num = id
           let str = num.toString()

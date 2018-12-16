@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 
 class Square extends Component {
 
-  renderSquare = (value) => {
-    if (value != null && value !== "X") {
-      return value
-    } else if (value === null) {
-      return null
-  } else if (value === "M") {
-      return value
-  } else if (value === "F")
-    return value
+    squareContent = (value) => {
+        if (value === -1 || value === 0 || value === 9 || value === 10) {
+            return false
+        } else {
+            return value
+        }
+    }
+
+  backgroundChooser = (value) => {
+      if (value === -1) {
+
+      }
   }
-
-
 
 
   render() {
@@ -26,7 +27,7 @@ class Square extends Component {
         onClick={() => {this.props.playerTurn(this.props.index)}}
         style={{color:COLORS[this.props.arrayVal]}}
       >
-        {this.renderSquare(this.props.arrayVal)}
+        {this.squareContent(this.props.arrayVal)}
       </div>
     );
   }
