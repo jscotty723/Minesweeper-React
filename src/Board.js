@@ -13,14 +13,23 @@ class Board extends Component {
     }
 
     rightClick = (id) => {
-      console.log("right click");
+        let { board } = this.state
+        let move = board
+            if (board[id] === null) {
+                move[id] = "F"
+            }
+        console.log("right click");
+        this.setState({
+          board: move
+        })
+
     }
 
     playerTurn = (id) => {
       let { board, mines } = this.state
       let move = board
         if (mines.includes(id)) {
-          move[id] = "X"
+          move[id] = "M"
         } else if (board[id] == null) {
           let counter = 0
           const num = id

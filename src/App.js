@@ -10,13 +10,18 @@ class App extends Component {
             gameWon: false
         }
     }
+
+
   render() {
     return (
-      <div id='pageContainer'>
+      <div onContextMenu={this.contextMenu} id='pageContainer'>
           <h1>This is Minesweeper</h1>
           <Board />
       </div>
     );
+  }
+  contextMenu() {
+      return false
   }
 }
 

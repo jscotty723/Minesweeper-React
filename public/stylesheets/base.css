@@ -1,0 +1,35 @@
+@font-face {
+  font-family: minesweeper;
+  src: url(../mine-sweeper.ttf);
+}
+
+* {
+    font-family: minesweeper;
+}
+
+#pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#board {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 330px
+}
+
+#square {
+    height: 30px;
+    width: 30px;
+    padding-left: 3px;
+    padding-top: 4px;
+    border: 1px solid red;
+    text-align: center;
+    font-size: 18px;
+}
+
+#square:hover {
+    background-color: red;
+}
