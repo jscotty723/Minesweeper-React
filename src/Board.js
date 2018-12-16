@@ -16,21 +16,20 @@ class Board extends Component {
         let { board } = this.state
         let move = board
             if (board[id] === -1) {
-                move[id] = "F"
+                move[id] = 9
             }
-        console.log("right click");
         this.setState({
           board: move
         })
-
+        console.log("right click");
     }
 
     playerTurn = (id) => {
       let { board, mines } = this.state
       let move = board
         if (mines.includes(id)) {
-          move[id] = "M"
-        } else if (board[id] == -1) {
+          move[id] = 10
+      } else if (board[id] === -1) {
           let counter = 0
           const num = id
           let str = num.toString()

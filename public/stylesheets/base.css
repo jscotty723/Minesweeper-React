@@ -27,10 +27,11 @@
     padding-top: 4px;
     text-align: center;
     font-size: 18px;
-    background-image: url("../Images/square.png");
+    background-color: #bdbdbd;
     background-position:center;
     background-repeat: no-repeat;
     background-size: contain;
+    border: 0.5px solid #898989;
 }
 
 #square:hover {
