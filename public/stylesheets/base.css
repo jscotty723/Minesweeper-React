@@ -13,6 +13,12 @@
     align-items: center;
 }
 
+.startGameContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
 #board {
     display: flex;
     flex-direction: row;
@@ -36,4 +42,11 @@
 
 #square:hover {
     /* border: 2px solid red; */
+}
+
+.startGame {
+    padding: 10px;
+    background-color: red;
+    font-size: 8px;
+    border-radius: 3px;
 }
