@@ -266,6 +266,15 @@ class Board extends Component {
                     </div>
                 </section>
                     <div className='infoContainer'>
+                            <div className='minesLeft minesContainer'>
+                                {this.state.minesLeft}
+                            </div>
+                            <div className='placeholder minesContainer'>
+                                88
+                            </div>
+                            <div className='stopwatch stopwatchContainer'>
+                                {this.state.stopwatch}
+                            </div>
                             <div className='placeholder stopwatchContainer'>
                                 888
                             </div>
