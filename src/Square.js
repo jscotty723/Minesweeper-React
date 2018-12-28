@@ -35,15 +35,16 @@ class Square extends Component {
         const COLORS = [null, "blue", "green", "red", "purple", "maroon", "teal", "black", "gray"]
         return (
             <div
-                contextMenu="none"
-                id="square"
+                id={this.props.index}
+                className="square"
                 onContextMenu={
-                    () => this.props.rightClick(this.props.index)}
+                    (e) => this.props.rightClick(e, this.props.index)}
                 onClick={
                     () => {this.props.playerTurn(this.props.index)}}
                 style={
                     {color:COLORS[this.props.arrayVal], backgroundImage:this.backgroundChooser(this.props.arrayVal)}
                 }
+
             >
                 {this.squareContent(this.props.arrayVal)}
             </div>

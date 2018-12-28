@@ -1,39 +1,60 @@
 import React, { Component } from 'react';
 import Square from './Square'
 
-
 class Board extends Component {
     constructor(props){
         super(props)
         this.state = {
             gameWon: true,
-            board: Array(100).fill(-1),
+            board: Array(64).fill(-1),
+            answerKey: Array(64).fill(-1),
             id: 1,
             mines: [],
-            minesLeft: 0
+            minesLeft: 0,
+            rowLength: 7,
+            boardWidth: "280px"
         }
     }
 
-    plantMines(num) {
-        let mineField = Array(num).fill(null)
-        mineField.map((el, i) => {
-            let tempMine = Math.floor(Math.random() * (99))
-            if (mineField.includes(tempMine)) {
-                return tempMine = Math.floor(Math.random() * (99))
-            } else {
-                return mineField[i] = tempMine
-            }
-        })
+    plantMines(mines, size) {
+        let width = "280px"
+        let rows = 8
+        let mineField = Array(mines).fill(null)
+        for (let i = 0; i < mineField.length; i++) {
+            let tempMine = this.makeMines(size, mineField)
+            mineField[i] = tempMine
+        }
+        if (size === 256) {
+            rows = 16
+            width = "550px"
+        } else if (size === 420) {
+            rows = 30
+            width = "1040px"
+
+        }
         this.setState({
             mines: mineField,
             gameWon: false,
-            board: Array(100).fill(-1),
-            minesLeft: num
+            board: Array(size).fill(-1),
+            minesLeft: mines,
+            boardWidth: width,
+            rowLength: rows
         })
     }
 
-    rightClick = (id) => {
-        let { board, gameWon, minesLeft } = this.state
+    makeMines = (size, mineField) => {
+        let setMines = mineField
+        let tempMine = Math.floor(Math.random() * (size-1))
+        if (setMines.includes(tempMine)) {
+            return this.makeMines(size, mineField)
+        } else {
+            return tempMine
+        }
+    }
+
+    rightClick = (e, id) => {
+        e.preventDefault()
+        const { board, gameWon, minesLeft } = this.state
         let mineCount = minesLeft
         let move = board
         if (gameWon === false) {
@@ -48,13 +69,13 @@ class Board extends Component {
             }
             this.setState({
                 board: move,
-                minesLeft: mineCount
+                minesLeft: mineCount,
             })
         }
     }
 
     playerTurn = (id) => {
-        let { board, mines, gameWon } = this.state
+        const { board, mines, gameWon } = this.state
         let move = board
         let gameOver = gameWon
         // validating gamestate not won //
@@ -65,27 +86,11 @@ class Board extends Component {
                 gameOver = true
                 this.gameLost(id)
             } else if (board[id] === -1) {
-                let counter = 0
-                const num = id
-                let str = num.toString()
-                let lastDigit = str.charAt(str.length-1)
-                const surroundingSquaresIfNine = [id-11, id-10, id-1, id+9, id+10]
-                const surroundingSquares = [id-11, id-10, id-9, id-1, id+1, id+9, id+10, id+11]
-                // if
-                if (lastDigit === "9") {
-                    for (let i = 0; i < surroundingSquaresIfNine.length; i++) {
-                        if (this.state.mines.includes(surroundingSquaresIfNine[i])) {
-                      counter ++
-                        }
-                    }
-                } else if (lastDigit !== "9") {
-                    for (let i = 0; i < surroundingSquares.length; i++) {
-                        if (this.state.mines.includes(surroundingSquares[i])) {
-                            counter ++
-                        }
-                    }
-                }
+                let counter = this.surroundingSquaresCounter(id)
                 move[id] = counter
+                if (counter === 0) {
+                    this.clickedSquare(id)
+                }
             }
             this.setState({
               board: move,
@@ -94,36 +99,138 @@ class Board extends Component {
         }
     }
 
+    revealBlankSpaces(id, array) {
+        const { board } = this.state
+        let spacesToSearch = array
+        // let adjacentSquares = this.adjacentChooser(id)
+
+        // for (let i = 0; i < adjacentSquares.length; i++) {
+        //     const boardIndex = adjacentSquares[i]
+        //     if (board[boardIndex] === -1 && (spacesToSearch.includes(adjacentSquares[i] === false))) {
+        //         spacesToSearch.push(adjacentSquares[i])
+        //     }
+        // }
+
+        for (let i = 0; i < spacesToSearch.length; i++) {
+            let index = spacesToSearch[i]
+            let value = this.surroundingSquaresCounter(index)
+            // square value = 0, no bombs adjacient
+            // (map value to surrouncing spaces) 1) open squares  2) add to spacesToSearch array
+            if (value === 0) {
+                let currentAdjacent = this.adjacentChooser(index)
+                for (let j = 0; j < currentAdjacent.length; j++) {
+                    let box = currentAdjacent[j]
+                    let move = board
+                    console.log(board[box]);
+                    if (board[box] === -1) {
+                        console.log(currentAdjacent[i], spacesToSearch);
+                        spacesToSearch.push(currentAdjacent[j])
+                    }
+                    if (board[box] === -1) {
+                        let counter = this.surroundingSquaresCounter(box)
+                        move[box] = counter
+                    }
+                    this.setState ({
+                      board: move,
+                    })
+                }
+            }
+        }
+    }
+
+    adjacentChooser = (id) => {
+        const { rowLength } = this.state
+        const surroundingSquaresIfFirst = [id, id-rowLength, id-(rowLength-1), id+1, id+rowLength, id+(rowLength+1)]
+        const surroundingSquaresIfLast = [id, id-(rowLength+1), id-rowLength, id-1, id+(rowLength-1), id+rowLength]
+        const surroundingSquares = [id, id-(rowLength-1), id-rowLength, id-(rowLength+1), id-1, id+1, id+(rowLength-1), id+rowLength, id+(rowLength+1)]
+        let adjacentSquares = []
+        if (id % rowLength === 0) {
+            adjacentSquares = surroundingSquaresIfFirst
+        } else if (id % rowLength === rowLength-1) {
+            adjacentSquares = surroundingSquaresIfLast
+        } else if (id % rowLength !== rowLength-1 || id % rowLength !== rowLength-1) {
+            adjacentSquares = surroundingSquares
+        }
+        return adjacentSquares
+    }
+
+    // takes clicked square and fills first part of spacesToSearch array
+    clickedSquare = (id) => {
+        const { board } = this.state
+        let spacesToSearch = []
+        let adjacentSquares = this.adjacentChooser(id)
+        for (let i = 0; i < adjacentSquares.length; i++) {
+            const boardIndex = adjacentSquares[i]
+            if (board[boardIndex] === -1) {
+                spacesToSearch.push(adjacentSquares[i])
+            }
+        }
+        this.revealBlankSpaces(id, spacesToSearch)
+    }
+
+    surroundingSquaresCounter = (id) => {
+        const { mines, rowLength } = this.state
+        const surroundingSquaresIfFirst = [id-rowLength, id-(rowLength-1), id+1, id+rowLength, id+(rowLength+1)]
+        const surroundingSquaresIfLast = [id-(rowLength+1), id-rowLength, id-1, id+(rowLength-1), id+rowLength]
+        const surroundingSquares = [id-(rowLength-1), id-rowLength, id-(rowLength+1), id-1, id+1, id+(rowLength-1), id+rowLength, id+(rowLength+1)]
+        let counter = 0
+        if (id % rowLength === 0) {
+            for (let i = 0; i < surroundingSquaresIfFirst.length; i++) {
+                for (let j = 0; j < mines.length; j++) {
+                    if (surroundingSquaresIfFirst[i] === mines[j]) {
+                        counter ++
+                    }
+                }
+            }
+        } else if (id % rowLength === rowLength-1) {
+            for (let i = 0; i < surroundingSquaresIfLast.length; i++) {
+                for (let j = 0; j < mines.length; j++) {
+                    if (surroundingSquaresIfLast[i] === mines[j]) {
+                        counter ++
+                    }
+                }
+            }
+        } else if (id % rowLength !== rowLength-1 || id % rowLength !== rowLength-1) {
+            for (let i = 0; i < surroundingSquares.length; i++) {
+                for (let j = 0; j < mines.length; j++) {
+                    if (surroundingSquares[i] === mines[j]) {
+                        counter ++
+                    }
+                }
+            }
+        }
+        return counter
+    }
+
     gameLost(id) {
         let { mines, board } = this.state
         let tempBoard = board
         mines.map(el => {
-            if(el !== id)
-            return tempBoard[el] = 11
+            if (el !== id) {
+                return tempBoard[el] = 11
+            }
         })
         this.setState({
             board:tempBoard
         })
     }
 
-
     render() {
-        console.log(this.state.mines);
         return (
             <main>
                 <section className='startGameContainer'>
-                    <div id='easyGame' className='startGame' onClick={() => this.plantMines(10)}>
+                    <div id='easyGame' className='startGame' onClick={() => this.plantMines(10, 64)}>
                         Easy
                     </div>
-                    <div id='intermediateGame' className='startGame' onClick={() => this.plantMines(20)}>
+                    <div id='intermediateGame' className='startGame' onClick={() => this.plantMines(40, 256)}>
                         Intermediate
                     </div>
-                    <div id='difficultGame' className='startGame' onClick={() => this.plantMines(35)}>
+                    <div id='difficultGame' className='startGame' onClick={() => this.plantMines(99, 420)}>
                         Difficult
                     </div>
                 </section>
                 <div>{this.state.minesLeft}</div>
-                <div id="board">
+                <div id="board" style={{width:this.state.boardWidth}}>
                     {this.state.board.map((el, i) => {
                         return <Square playerTurn={this.playerTurn} rightClick={this.rightClick} arrayVal={el} index={i}/>
                     })
