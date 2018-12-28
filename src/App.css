@@ -1,1 +1,52 @@
+@font-face {
+  font-family: 'minesweeper';
+  src: url(../src/mine-sweeper.ttf);
+}
 
+* {
+    font-family: 'minesweeper';
+    cursor: pointer;
+}
+
+#pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.startGameContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+#board {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.square {
+    height: 30px;
+    width: 30px;
+    padding-left: 3px;
+    padding-top: 4px;
+    text-align: center;
+    font-size: 18px;
+    background-color: #bdbdbd;
+    background-position:center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: 0.5px solid #898989;
+}
+
+.square:hover {
+    /* border: 2px solid red; */
+}
+
+.startGame {
+    padding: 10px;
+    background-color: red;
+    font-size: 8px;
+    border-radius: 3px;
+}
