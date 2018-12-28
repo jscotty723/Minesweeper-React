@@ -269,14 +269,8 @@ class Board extends Component {
                             <div className='minesLeft minesContainer'>
                                 {this.state.minesLeft}
                             </div>
-                            <div className='placeholder minesContainer'>
-                                88
-                            </div>
                             <div className='stopwatch stopwatchContainer'>
                                 {this.state.stopwatch}
-                            </div>
-                            <div className='placeholder stopwatchContainer'>
-                                888
                             </div>
                     </div>
                 <div id="board" style={{width:this.state.boardWidth}}>

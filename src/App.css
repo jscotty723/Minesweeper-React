@@ -80,21 +80,8 @@
 }
 
 .minesContainer {
-    position: absolute;
     width: 52px;
     text-align: right;
-    padding-right: 5px;
-    padding-left: 5px;
-}
-
-.stopwatchCounter {
-    display: flex;
-    width: 82px;
-    background-color: black;
-}
-
-.stopwatchContainer {
-    width: 82px;
     padding-right: 5px;
     padding-left: 5px;
 }
