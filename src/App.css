@@ -3,6 +3,11 @@
   src: url(../src/mine-sweeper.ttf);
 }
 
+@font-face {
+  font-family: 'd5-digital';
+  src: url(../src/DS-DIGI.TTF);
+}
+
 * {
     font-family: 'minesweeper';
     cursor: pointer;
@@ -49,4 +54,47 @@
     background-color: red;
     font-size: 8px;
     border-radius: 3px;
+}
+
+.minesLeft,.stopwatch {
+    font-family: 'd5-digital';
+    font-size: 52px;
+    font-weight: bold;
+    color: red;
+    background-color: black;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.placeholder {
+    color: rgba(255, 0, 0, .3);
+    font-family: 'd5-digital';
+    font-size: 52px;
+    font-weight: bold;
+    width: 52px;
+}
+
+.infoContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.minesContainer {
+    position: absolute;
+    width: 52px;
+    text-align: right;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.stopwatchCounter {
+    display: flex;
+    width: 82px;
+    background-color: black;
+}
+
+.stopwatchContainer {
+    width: 82px;
+    padding-right: 5px;
+    padding-left: 5px;
 }

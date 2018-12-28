@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Square from './Square'
+import Stopwatch from './Stopwatch'
 
 class Board extends Component {
     constructor(props){
@@ -12,11 +13,33 @@ class Board extends Component {
             mines: [],
             minesLeft: 0,
             rowLength: 7,
-            boardWidth: "280px"
+            boardWidth: "280px",
+            stopwatch: 999,
         }
     }
 
+    incrementCounter() {
+        this.setState({
+            stopwatch: this.state.stopwatch + 1
+        });
+        this.startTimer = setTimeout(this.incrementCounter.bind(this), 1000);
+    }
+
+    stopStopwatch() {
+        let time = this.state.stopwatch
+        clearTimeout(this.startTimer)
+        this.displayTimer(time)
+    }
+
+    displayTimer(time) {
+        this.setState({
+            stopwatch: time
+        })
+    }
+
+
     plantMines(mines, size) {
+        this.stopStopwatch()
         let width = "280px"
         let rows = 8
         let mineField = Array(mines).fill(null)
@@ -30,15 +53,17 @@ class Board extends Component {
         } else if (size === 420) {
             rows = 30
             width = "1040px"
-
         }
+
+        this.incrementCounter()
         this.setState({
             mines: mineField,
             gameWon: false,
             board: Array(size).fill(-1),
             minesLeft: mines,
             boardWidth: width,
-            rowLength: rows
+            rowLength: rows,
+            stopwatch: 0
         })
     }
 
@@ -66,6 +91,15 @@ class Board extends Component {
                 mineCount += 1
             } else if (board[id] === "?") {
                 move[id] = -1
+            } else {
+                let adjacentSquares = this.adjacentChooser(id)
+                for (let i = 0; i < adjacentSquares.length; i++) {
+                    let box = adjacentSquares[i]
+                    console.log(board[box]);
+                    if (board[box] === -1) {
+                        this.playerTurn(adjacentSquares[i])
+                    }
+                }
             }
             this.setState({
                 board: move,
@@ -75,6 +109,7 @@ class Board extends Component {
     }
 
     playerTurn = (id) => {
+        console.log("here");
         const { board, mines, gameWon } = this.state
         let move = board
         let gameOver = gameWon
@@ -121,9 +156,7 @@ class Board extends Component {
                 for (let j = 0; j < currentAdjacent.length; j++) {
                     let box = currentAdjacent[j]
                     let move = board
-                    console.log(board[box]);
                     if (board[box] === -1) {
-                        console.log(currentAdjacent[i], spacesToSearch);
                         spacesToSearch.push(currentAdjacent[j])
                     }
                     if (board[box] === -1) {
@@ -205,15 +238,18 @@ class Board extends Component {
     gameLost(id) {
         let { mines, board } = this.state
         let tempBoard = board
+        this.stopStopwatch()
         mines.map(el => {
             if (el !== id) {
                 return tempBoard[el] = 11
             }
         })
         this.setState({
-            board:tempBoard
+            board: tempBoard,
+            stopwatch: false
         })
     }
+
 
     render() {
         return (
@@ -229,7 +265,11 @@ class Board extends Component {
                         Difficult
                     </div>
                 </section>
-                <div>{this.state.minesLeft}</div>
+                    <div className='infoContainer'>
+                            <div className='placeholder stopwatchContainer'>
+                                888
+                            </div>
+                    </div>
                 <div id="board" style={{width:this.state.boardWidth}}>
                     {this.state.board.map((el, i) => {
                         return <Square playerTurn={this.playerTurn} rightClick={this.rightClick} arrayVal={el} index={i}/>
