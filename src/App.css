@@ -4,8 +4,8 @@
 }
 
 @font-face {
-  font-family: 'd5-digital';
-  src: url(../src/DS-DIGI.TTF);
+  font-family: 'digitalDisplay';
+  src: url(../src/DS-DIGIB.TTF);
 }
 
 * {
@@ -56,32 +56,40 @@
     border-radius: 3px;
 }
 
-.minesLeft,.stopwatch {
-    font-family: 'd5-digital';
-    font-size: 52px;
-    font-weight: bold;
-    color: red;
-    background-color: black;
-    padding-right: 5px;
-    padding-left: 5px;
-}
-
-.placeholder {
-    color: rgba(255, 0, 0, .3);
-    font-family: 'd5-digital';
-    font-size: 52px;
-    font-weight: bold;
-    width: 52px;
-}
-
 .infoContainer {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 15px;
+
+}
+
+.minesContainer,.stopwatchContainer {
+    font-family: 'digitalDisplay';
+    font-size: 62px;
+    font-weight: bold;
+    background-color: black;
+    color:red;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 .minesContainer {
-    width: 52px;
     text-align: right;
-    padding-right: 5px;
-    padding-left: 5px;
+    width: 67px;
+}
+
+.stopwatchContainer {
+    text-align: right;
+    width: 97px;
+}
+
+div.placeholder {
+    display:none;
+    position: relative;
+    font-family: 'digitalDisplay';
+    color: rgba(255, 0, 0, 0.4);
+    font-size: 62px;
+    left: 0px;
+    top: -51px;
+    padding: 5px;
 }

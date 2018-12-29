@@ -13,7 +13,7 @@ class Board extends Component {
             mines: [],
             minesLeft: 0,
             rowLength: 7,
-            boardWidth: "280px",
+            boardWidth: "272px",
             stopwatch: 999,
         }
     }
@@ -37,10 +37,9 @@ class Board extends Component {
         })
     }
 
-
     plantMines(mines, size) {
         this.stopStopwatch()
-        let width = "280px"
+        let width = "272px"
         let rows = 8
         let mineField = Array(mines).fill(null)
         for (let i = 0; i < mineField.length; i++) {
@@ -49,10 +48,10 @@ class Board extends Component {
         }
         if (size === 256) {
             rows = 16
-            width = "550px"
+            width = "544px"
         } else if (size === 420) {
             rows = 30
-            width = "1040px"
+            width = "1020px"
         }
 
         this.incrementCounter()
@@ -265,14 +264,24 @@ class Board extends Component {
                         Difficult
                     </div>
                 </section>
-                    <div className='infoContainer'>
-                            <div className='minesLeft minesContainer'>
-                                {this.state.minesLeft}
-                            </div>
-                            <div className='stopwatch stopwatchContainer'>
-                                {this.state.stopwatch}
-                            </div>
+                <section className='infoContainer'>
+                    <div>
+                        <div className='minesContainer'>
+                            {this.state.minesLeft}
+                        </div>
+                        <div className='placeholder'>
+                            88
+                        </div>
                     </div>
+                    <div>
+                        <div className='stopwatchContainer'>
+                            {this.state.stopwatch}
+                        </div>
+                        <div className='placeholder'>
+                            888
+                        </div>
+                    </div>
+                </section>
                 <div id="board" style={{width:this.state.boardWidth}}>
                     {this.state.board.map((el, i) => {
                         return <Square playerTurn={this.playerTurn} rightClick={this.rightClick} arrayVal={el} index={i}/>
