@@ -6,7 +6,7 @@ class Board extends Component {
     constructor(props){
         super(props)
         this.state = {
-            gameWon: true,
+            gameOver: true,
             board: Array(64).fill(-1),
             answerKey: Array(64).fill(-1),
             id: 1,
@@ -28,10 +28,10 @@ class Board extends Component {
     stopStopwatch() {
         let time = this.state.stopwatch
         clearTimeout(this.startTimer)
-        this.displayTimer(time)
+        this.displayStopwatch(time)
     }
 
-    displayTimer(time) {
+    displayStopwatch(time) {
         this.setState({
             stopwatch: time
         })
@@ -57,7 +57,7 @@ class Board extends Component {
         this.incrementCounter()
         this.setState({
             mines: mineField,
-            gameWon: false,
+            gameOver: false,
             board: Array(size).fill(-1),
             minesLeft: mines,
             boardWidth: width,
@@ -78,10 +78,10 @@ class Board extends Component {
 
     rightClick = (e, id) => {
         e.preventDefault()
-        const { board, gameWon, minesLeft } = this.state
+        const { board, gameOver, minesLeft } = this.state
         let mineCount = minesLeft
         let move = board
-        if (gameWon === false) {
+        if (gameOver === false) {
             if (board[id] === -1) {
                 move[id] = 9
                 mineCount -= 1
@@ -109,15 +109,15 @@ class Board extends Component {
 
     playerTurn = (id) => {
         console.log("here");
-        const { board, mines, gameWon } = this.state
+        const { board, mines, gameOver } = this.state
         let move = board
-        let gameOver = gameWon
+        let gameWon = gameOver
         // validating gamestate not won //
-        if (gameWon === false) {
+        if (gameOver === false) {
             // if click hits a mine //
             if (mines.includes(id)) {
                 move[id] = 10
-                gameOver = true
+                gameWon = true
                 this.gameLost(id)
             } else if (board[id] === -1) {
                 let counter = this.surroundingSquaresCounter(id)
@@ -128,7 +128,7 @@ class Board extends Component {
             }
             this.setState({
               board: move,
-              gameWon: gameOver
+              gameOver: gameWon
             })
         }
     }
@@ -245,7 +245,7 @@ class Board extends Component {
         })
         this.setState({
             board: tempBoard,
-            stopwatch: false
+            gameOver: true
         })
     }
 
