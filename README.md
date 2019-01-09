@@ -4,7 +4,7 @@ My process in developing this game:
 I've really enjoyed learning coding by making games. I wanted to get a little deeper into the logic and minesweeper had a greater complexity then the other games upon which I had been working.
 
 Technologies Used:
-● ReactJS 
+● ReactJS
 ● CSS3
 
 Barriers to Development:
